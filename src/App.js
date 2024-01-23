@@ -12,6 +12,7 @@ import Leaderboard from "./components/Leaderboard";
 import Quiz from  "./components/Quiz";
 import Forgot from  "./components/Forgot";
 import Profile from "./components/Profile";
+import Linegraph from "./components/pages/LineGraph";
 
 import { useState } from "react";
 
@@ -93,7 +94,7 @@ const App = () => {
           setUserId = {setUserId}/>}
         />
 
-        <Route path="/dashboard" exact element={<Dashboard />} 
+        <Route path="/dashboard" exact element={<Linegraph />} 
               userId = {userId}
               setUserId = {setUserId}/>
 
@@ -133,6 +134,7 @@ const App = () => {
         <Route path='/quizend' exact element={<Quizend score={score}/>}/>
         <Route path='/forgot' exact element = {<Forgot/>} />   
         <Route path='/profile' exact element = {<Profile/>} />
+        
       </Routes>
     </Router>
   );

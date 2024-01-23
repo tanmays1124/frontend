@@ -1,7 +1,8 @@
-import React from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-
+import NavItem from './NavItem';
+import logo from '../images/QuizVizz-logo.png'
+import './Navbar.css';
 
 
 const Navbar = ({ token, setToken, user, setUser, setLogged, page }) => {
@@ -32,38 +33,38 @@ const Navbar = ({ token, setToken, user, setUser, setLogged, page }) => {
     home='active';
   }
 
+  const links = [
+    { text: 'Home', path: '/', icons: 'home' },
+    { text: 'Dashboard', path: '/dashboard', icons: 'chart-line' },
+    { text: 'History', path: '/history', icons: 'timeline' },
+    { text: 'Profile', path: '/profile', icons: 'user' },
+  ];
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const toggleNavbar = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
 return(
   <>
-    <nav className="navbar navbar-expand-lg bg-body-tertiary fixed-top" >
-  <div className="container-fluid">
-    <Link className="navbar-brand" to="/home">QuizViz</Link>
-    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      <span className="navbar-toggler-icon"></span>
-    </button>
-    <div className="collapse navbar-collapse justify-content-center" id="navbarNavDropdown">
-    
-      <ul className="nav navbar-nav fs-5">
-        <li className="nav-item">
-          <Link className={`nav-link ${home}`} aria-current="page" to="/home">Home</Link>
-        </li>
-        <li className="nav-item">
-          <Link className={`nav-link ${dashboard}`} to="/dashboard">Dashboard</Link>
-        </li>
-        <li className="nav-item">
-          <Link className={`nav-link ${history}`} to="/history">History</Link>
-        </li>
-        <li className="nav-item dropdown">
-          <Link className="nav-link dropdown-toggle" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Profile
-          </Link>
-          <ul className="dropdown-menu">
-            <li><div className="dropdown-item" onClick={handleLogout} style={{ cursor: "pointer"}} >Logout</div></li>
-            <li><Link className="dropdown-item" to="/profile">Edit Profile</Link></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </div>
+    <nav className={`side-navbar ${isCollapsed ? 'collapsed' : ''}`}>
+
+{/* Website name and logo */}
+<button className="navbar-toggler" onClick={toggleNavbar}>
+<i class={`fa-solid fa-chevron-${isCollapsed? 'right':'left'}`}></i>
+</button>
+<div className="navbar-header">
+  <a href="/">
+  <img class="logo" src={logo}/>
+  </a>
+</div>
+
+<ul className="nav-list">
+  {links.map((link) => (
+    <NavItem key={link.text} {...link} />
+  ))}
+  <NavItem text="Logout" onClick={handleLogout}/> 
+</ul>
 </nav>
   </>
 )

@@ -23,7 +23,8 @@
     --bs-bg-opacity: 0.4;
     background-color: rgb(241, 241, 241) !important;
     border-radius: 50px !important;
-    margin-top: 10% !important;
+    padding: 20px !important;
+    /* margin-top: 10% !important; */
 }
 
 .profile-button.btn-outline-primary{

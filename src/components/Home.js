@@ -11,6 +11,7 @@ import Navbar from "./Navbar";
 import Loading from "./Loading";
 import axios from "axios";
 
+
 const Modal = (props) => {
   const [allUpdated, setAllUpdated] = useState(false);
   const navigate = useNavigate();
@@ -355,16 +356,40 @@ useEffect(()=>{
 })
 
 
+
+
+
+
+const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+
+
+
+
   return (
     <>
-      <Navbar
+      {/* <Navbar
         user={user}
         setUser={user}
         token={token}
         setToken={setToken}
         setLogged={setLogged}
         page={"Home"}
-      />
+      /> */}
+      <Navbar />
+
 <div className="background">
       <div className="container">
         <div className="row">

@@ -1,32 +1,76 @@
-import { useState } from 'react';
+import { useEffect, useState } from "react";
 import "./Profile.css";
-import Navbar from './Navbar';
+import Navbar from "./Navbar";
 import pfimg from "../images/profile.jpg";
 
 const Profile = () => {
-    const [disable, setdisable] = useState(true)
+  const [disable, setdisable] = useState(true);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
 
-    const handleUpdate = () =>
-    {
-        setdisable(false)
-    }
+  const handleUpdate = () => {
+    setdisable(false);
 
-    const handleSave = () =>{
-        setdisable(true)
+  };
+
+
+
+  const handleSave = () => {
+    setdisable(true);
+  };
+
+
+
+
+
+
+  const fetchUserData = async () => {
+    try {
+      const userid = localStorage.getItem("userId");
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/userprofile/?user_id=${userid}`
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      console.log(data);
+
+      setFirstName(data[0].first_name);
+      setLastName(data[0].last_name);
+      setUsername(data[0].username);
+      setEmail(data[0].email);
+
+
+    } catch (error) {
+      console.error("Error fetching user data:", error);
     }
+  };
+
+
+
+  useEffect(()=>{
+
+    fetchUserData();
+
+
+  },[username,firstName,lastName,email])
+
+
+
   return (
     <>
-    <Navbar/>
+      <Navbar />
       <div className="container shadow rounded bg-secondary mt-5 mb-5 profile-container">
         <div className="row">
           <div className="col-md-4 border-right">
             <div className="d-flex flex-column align-items-center text-center p-3 py-5">
-              <img
-                className="rounded-circle mt-5"
-                width="150px"
-                src={pfimg}
-              />
-              <span className="text-black-50">{localStorage.getItem('username')}</span>
+              <img className="rounded-circle mt-5" width="150px" src={pfimg} />
+              <span className="text-black-50">
+                {username}
+              </span>
               <span> </span>
             </div>
           </div>
@@ -42,9 +86,8 @@ const Profile = () => {
                     type="text"
                     className="form-control"
                     placeholder="first name"
-                    
-                    disabled = {disable}
-                    
+                    defaultValue={firstName}
+                    disabled={disable}
                   />
                 </div>
                 <div className="col-md-6">
@@ -53,7 +96,8 @@ const Profile = () => {
                     type="text"
                     className="form-control"
                     placeholder="last name"
-                    disabled = {disable}
+                    defaultValue={lastName}
+                    disabled={disable}
                   />
                 </div>
               </div>
@@ -64,7 +108,7 @@ const Profile = () => {
                     type="text"
                     className="form-control"
                     placeholder="enter country"
-                    disabled = {disable}
+                    disabled={disable}
                   />
                 </div>
                 <div className="col-md-12">
@@ -73,7 +117,8 @@ const Profile = () => {
                     type="text"
                     className="form-control"
                     placeholder="enter email id"
-                    disabled = {disable}
+                    defaultValue={email}
+                    disabled={disable}
                   />
                 </div>
               </div>
@@ -88,7 +133,7 @@ const Profile = () => {
                 <button
                   className="btn btn-outline-primary profile-button"
                   type="submit"
-                  onClick= {handleSave}
+                  onClick={handleSave}
                   disabled={disable}
                 >
                   Save Profile
