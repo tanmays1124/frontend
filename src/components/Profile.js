@@ -30,7 +30,7 @@ const Profile = () => {
     try {
       const userid = localStorage.getItem("userId");
       const response = await fetch(
-        `http://127.0.0.1:8000/api/userprofile/?user_id=${userid}`
+        `http://127.0.0.1:8000/api/userprofile/${userid}`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -38,10 +38,10 @@ const Profile = () => {
       const data = await response.json();
       console.log(data);
 
-      setFirstName(data[0].first_name);
-      setLastName(data[0].last_name);
-      setUsername(data[0].username);
-      setEmail(data[0].email);
+      setFirstName(data.first_name);
+      setLastName(data.last_name);
+      setUsername(data.username);
+      setEmail(data.email);
 
 
     } catch (error) {
