@@ -10,6 +10,7 @@ const Profile = () => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
 
+
   const handleUpdate = () => {
     setdisable(false);
 
@@ -18,7 +19,30 @@ const Profile = () => {
 
 
   const handleSave = () => {
+    const f = document.querySelectorAll('.form-control')
+    const authToken = localStorage.getItem('token');
+
     setdisable(true);
+
+    fetch('http://127.0.0.1:8000/api/update/', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`,
+
+      },
+      body: JSON.stringify({
+        firstName: f[0].value,
+        lastName: f[1].value,
+        email: f[3].value,
+      }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Profile updated successfully:', data);
+      })
+      .catch(error => console.error('Error updating profile:', error));
+    
   };
 
 
@@ -88,6 +112,7 @@ const Profile = () => {
                     placeholder="first name"
                     defaultValue={firstName}
                     disabled={disable}
+                    
                   />
                 </div>
                 <div className="col-md-6">
@@ -98,6 +123,7 @@ const Profile = () => {
                     placeholder="last name"
                     defaultValue={lastName}
                     disabled={disable}
+                    
                   />
                 </div>
               </div>
@@ -119,6 +145,7 @@ const Profile = () => {
                     placeholder="enter email id"
                     defaultValue={email}
                     disabled={disable}
+                    
                   />
                 </div>
               </div>
