@@ -2,57 +2,82 @@ import { useEffect, useState } from "react";
 import "./Profile.css";
 import Navbar from "./Navbar";
 import pfimg from "../images/profile.jpg";
+import axios from "axios";
 
 const Profile = () => {
   const [disable, setdisable] = useState(true);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [photoSrc, setPhotoSrc] = useState("");
+  const [photo, setPhoto] = useState(null);
 
+  const userid = localStorage.getItem("userId");
 
   const handleUpdate = () => {
     setdisable(false);
-
   };
 
-
-
-  const handleSave = () => {
-    const f = document.querySelectorAll('.form-control')
-    const authToken = localStorage.getItem('token');
-
-    setdisable(true);
-
-    fetch('http://127.0.0.1:8000/api/update/', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${authToken}`,
-
-      },
-      body: JSON.stringify({
-        firstName: f[0].value,
-        lastName: f[1].value,
-        email: f[3].value,
-      }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Profile updated successfully:', data);
-      })
-      .catch(error => console.error('Error updating profile:', error));
-    
+  const handlePhotoChange = (e) => {
+    setPhoto(e.target.files[0]);
   };
 
 
 
 
 
+  const fetchUserPhoto = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/getphoto/${userid}`);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const photoBlob = await response.blob();
+      const photoUrl = URL.createObjectURL(photoBlob);
+      setPhotoSrc(photoUrl);
+    } catch (error) {
+      console.error("Error fetching user photo:", error);
+    }
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+  const handleSave = async (event) => {
+    event.preventDefault();
+
+    const details = document.querySelectorAll(".form-control");
+
+    const formData = {
+      first_name: details[0].value,
+      last_name: details[1].value,
+      email: details[3].value,
+    };
+
+    try {
+      const response = await axios.post(
+        `http://127.0.0.1:8000/api/update/${userid}`,
+        formData
+      );
+
+      console.log(response.data);
+      setdisable(true);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const fetchUserData = async () => {
     try {
-      const userid = localStorage.getItem("userId");
       const response = await fetch(
         `http://127.0.0.1:8000/api/userprofile/${userid}`
       );
@@ -66,23 +91,38 @@ const Profile = () => {
       setLastName(data.last_name);
       setUsername(data.username);
       setEmail(data.email);
-
-
+      setPhotoSrc(data.photo)
+      console.log(photoSrc)
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
   };
 
+  const handleUpload = async () => {
+    const formData = new FormData();
+    formData.append("photo", photo);
 
+    try {
+      const response = await axios.post(
+        `http://127.0.0.1:8000/api/upload/${userid}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("Photo uploaded successfully:", response.data);
+    } catch (error) {
+      console.error("Error uploading photo:", error);
+    }
+  };
 
-  useEffect(()=>{
-
+  useEffect(() => {
     fetchUserData();
+    fetchUserPhoto();
 
-
-  },[username,firstName,lastName,email])
-
-
+  }, []);
 
   return (
     <>
@@ -91,10 +131,8 @@ const Profile = () => {
         <div className="row">
           <div className="col-md-4 border-right">
             <div className="d-flex flex-column align-items-center text-center p-3 py-5">
-              <img className="rounded-circle mt-5" width="150px" src={pfimg} />
-              <span className="text-black-50">
-                {username}
-              </span>
+              <img className="rounded-circle mt-5" width="150px" src={photoSrc} />
+              <span className="text-black-50">{username}</span>
               <span> </span>
             </div>
           </div>
@@ -112,18 +150,18 @@ const Profile = () => {
                     placeholder="first name"
                     defaultValue={firstName}
                     disabled={disable}
-                    
+                    name="first_name"
                   />
                 </div>
                 <div className="col-md-6">
                   <label className="labels">Last Name</label>
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control "
                     placeholder="last name"
                     defaultValue={lastName}
                     disabled={disable}
-                    
+                    name="last_name"
                   />
                 </div>
               </div>
@@ -135,6 +173,7 @@ const Profile = () => {
                     className="form-control"
                     placeholder="enter country"
                     disabled={disable}
+                    name="country"
                   />
                 </div>
                 <div className="col-md-12">
@@ -145,7 +184,7 @@ const Profile = () => {
                     placeholder="enter email id"
                     defaultValue={email}
                     disabled={disable}
-                    
+                    name="email"
                   />
                 </div>
               </div>
@@ -169,6 +208,8 @@ const Profile = () => {
             </div>
           </div>
         </div>
+        <input type="file" accept="image/*" onChange={handlePhotoChange} />
+        <button onClick={handleUpload}>Upload Photo</button>
       </div>
     </>
   );
