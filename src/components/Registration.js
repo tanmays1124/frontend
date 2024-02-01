@@ -332,7 +332,7 @@ function Register() {
   // };
 
 const validatePassword = (value) => {
-  const alphanumericRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@])[A-Za-z\d@]{8,}$/;
+  const alphanumericRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@]{8,}$/;
   return alphanumericRegex.test(value);
 };
 
@@ -359,22 +359,25 @@ const handleSubmit = async (event) => {
 
   try {
     const response = await axios.post('http://127.0.0.1:8000/api/register/', formData);
-    setError(null);
+    // setError(null);
     console.log(response.data);
+
     window.location.href = '/login';
+  
+  
   } catch (err) {
-    if (err.response && err.response.status === 409) {
+    if (err.response && err.response.status === 400) {
       const errorData = err.response.data;
-      if (errorData.email) {
-        setMssg("Email already exists");
-      } else if (errorData.username) {
-        setMssg("Username already exists");
-      }
-      if (alertElement) alertElement.style.display = 'block';
-    } else {
-      setError(err.message);
+      console.log(errorData.error)
+      // document.getElementById('alert').style.display = 'block';
+      alertElement.style.display = 'block'
+
+      setMssg(errorData.error)
     }
+    
   }
+  
+  
 }
 
 
