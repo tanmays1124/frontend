@@ -1,7 +1,12 @@
-const Leaderboard = () =>{
-    return(
-        <h1>Leaderboard</h1>
-    )
+import Board from './lead/board';
+import './lead/style.css';
+
+function App() {
+  return (
+    <div className="App" id='main'>
+        <Board></Board>
+    </div>
+  );
 }
 
-export default Leaderboard;
+export default App;

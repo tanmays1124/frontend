@@ -5,27 +5,47 @@
   box-sizing: border-box;
   font-family: 'Poppins',sans-serif;
 } */
-/* body{
-  height: 100vh;
+body{
+
+  margin: 0;
+  padding : 0;
+  background-color: #fff !important;
+} 
+
+
+.partition {
   display: flex;
+  width: 97vw;
+  height: 100vh;
+}
+.partition-image {
+  margin-top: 155px;
+  width: 50%;
+  height: 420px;
+  background-position: center;
+  background-size: 100% 100%;
+}
+
+.partition.image img {
+  max-width: 100%;
+  width: fit-content;
+  height: fit-content;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+/* Remove the border for the last partition */
+.partition:last-child {
+  border-right: none;
+}
+.login-container{
+  margin: 0;
+  margin-top:20dvh;
   justify-content: center;
   align-items: center;
-  padding: 10px;
-    background: linear-gradient(#ff8901,#ffa600);
-
-}  */
-.login-container{
-  margin-top: 100px;
-  margin-right: 10px;
-  margin-left: 500px;  
-  max-width: 500px;
-  width: 100%;
-  background-color: #fff;
-  padding: 25px 30px;
-  border-radius: 5px;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.15);
-    /* border: 2px solid #548099; */
-
+  background-color: white;
+  width: 40%;
+  height:fit-content;
+  background-repeat: no-repeat;
 }
 .login-container .title{
   font-size: 25px;
@@ -38,7 +58,7 @@
   left: 50;
   bottom: 0;
   height: 3px;
-  width: 30px;
+  width: 60px;
   border-radius: 5px;
   background: #548099;
 }
@@ -52,10 +72,35 @@ form .user-details .input-box{
   margin-bottom: 15px;
   width: calc(100% / 2 - 20px);
 }
+form .user-details .inputbox{
+  margin-left: 85px;
+  width: 70%;
+  margin-bottom: 15px;
+}
+form .inputbox span.details{
+  display: block;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
 form .input-box span.details{
   display: block;
   font-weight: 500;
   margin-bottom: 5px;
+}
+.user-details .inputbox input{
+  height: 45px;
+  width: 100%;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding-left: 15px;
+  border: 1px solid #ccc;
+  border-bottom-width: 2px;
+  transition: all 0.3s ease;
+}
+.user-details .inputbox input:focus,
+.user-details .inputbox input:valid{
+  border-color: #548099;
 }
 .user-details .input-box input{
   height: 45px;
@@ -111,7 +156,7 @@ form .input-box span.details{
  }
  form .button input{
    height: 100%;
-   width: 100%;
+   width: 70%;
    border-radius: 5px;
    border: none;
    color: #fff;
@@ -123,7 +168,6 @@ form .input-box span.details{
    background: rgb(124, 207, 255);
  }
  form .button input:hover{
-  /* transform: scale(0.99); */
   background: rgb(89, 189, 247);
   }
  @media(max-width: 584px){
@@ -149,4 +193,27 @@ form .user-details .input-box{
   .login-container .content .category{
     flex-direction: column;
   }
+}
+
+.error-message {
+  color: red; /* Change to the desired color */
+  font-weight: bold; /* Optional: Adjust font weight */
+  margin-top: 10px; /* Optional: Adjust spacing from other elements */
+}
+
+
+.password-input-container {
+  position: relative;
+}
+
+.inputbox input {
+  padding-right: 30px; /* Adjust the padding to accommodate the eye icon */
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 10px; /* Adjust the right distance as needed */
+  transform: translateY(-50%);
+  cursor: pointer;
 }

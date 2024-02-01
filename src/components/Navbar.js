@@ -1,146 +1,225 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import NavItem from './NavItem';
-import logo from '../images/QuizVizz-logo.png'
-import './Navbar.css';
+import * as React from 'react';
+import { styled, useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import MuiDrawer from '@mui/material/Drawer';
+import MuiAppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import CssBaseline from '@mui/material/CssBaseline';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import { useNavigate } from 'react-router-dom';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import HomeIcon from '@mui/icons-material/Home';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import HistoryIcon from '@mui/icons-material/History';
+import PersonIcon from '@mui/icons-material/Person';
+import InfoIcon from '@mui/icons-material/Info';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'; 
 
+const drawerWidth = 240;
+
+const openedMixin = (theme) => ({
+  width: drawerWidth,
+  backgroundColor: '#e4e9f7 ', // Specify your desired background color here
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: 'hidden',
+});
+
+const closedMixin = (theme) => ({
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: 'hidden',
+  width: `calc(${theme.spacing(7)} + 1px)`,
+  [theme.breakpoints.up('sm')]: {
+    width: `calc(${theme.spacing(8)} + 1px)`,
+  },
+  opacity: 1,
+  backgroundColor: '#e4e9f7 ', // Set the background color when the drawer is closed
+});
+
+const DrawerHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center', // Center content horizontally
+  padding: theme.spacing(0, 1),
+  opacity: 1.0,
+  width: '100%', // Set width to 100%
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+}));
+
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+    boxSizing: 'border-box',
+    ...(open && {
+      ...openedMixin(theme),
+      '& .MuiDrawer-paper': openedMixin(theme),
+    }),
+    ...(!open && {
+      ...closedMixin(theme),
+      '& .MuiDrawer-paper': closedMixin(theme),
+    }),
+  }),
+);
 
 const Navbar = ({ token, setToken, user, setUser, setLogged, page }) => {
-  const navigate = useNavigate()
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(false); // Change default state to false
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    console.log("log out");
-    // setToken("");
-
-    console.log(localStorage.getItem('uerId'));
-
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     localStorage.removeItem('username');
-
-    // setLogged(false);
     navigate('/login');
   };
-  let history=''
-  let home=''
-  let dashboard=''
-  if(page=='History'){
-    history='active';
-    home='';
-  }
-  if(page=='Home'){
-    history='';
-    home='active';
-  }
-
-  const links = [
-    { text: 'Home', path: '/', icons: 'home' },
-    { text: 'Dashboard', path: '/dashboard', icons: 'chart-line' },
-    { text: 'History', path: '/history', icons: 'timeline' },
-    { text: 'Profile', path: '/profile', icons: 'user' },
-  ];
-  const [isCollapsed, setIsCollapsed] = useState(false);
-
-  const toggleNavbar = () => {
-    setIsCollapsed(!isCollapsed);
-  };
-
-return(
-  <>
-    <nav className={`side-navbar ${isCollapsed ? 'collapsed' : ''}`}>
-
-{/* Website name and logo */}
-<button className="navbar-toggler" onClick={toggleNavbar}>
-<i class={`fa-solid fa-chevron-${isCollapsed? 'right':'left'}`}></i>
-</button>
-<div className="navbar-header">
-  <a href="/">
-  <img class="logo" src={logo}/>
-  </a>
-</div>
-
-<ul className="nav-list">
-  {links.map((link) => (
-    <NavItem key={link.text} {...link} />
-  ))}
-  <NavItem text="Logout" onClick={handleLogout}/> 
-</ul>
-</nav>
-  </>
-)
-};
-
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <Drawer variant="permanent" open={open}>
+        <DrawerHeader>
+          <IconButton onClick={() => setOpen(!open)}>
+            {open ? (
+              <>
+                <h1>Quizviz</h1>
+                {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+              </>
+            ) : (
+              <ChevronRightIcon />
+            )}
+          </IconButton>
+        </DrawerHeader>
+        <Divider />
+        <List>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/')}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+                }}
+              >
+                <HomeIcon />
+              </ListItemIcon>
+              <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/Dashboard')}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+                }}
+              >
+                <DashboardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Dashboard" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/History')}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+                }}
+              >
+                <HistoryIcon />
+              </ListItemIcon>
+              <ListItemText primary="History" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate('/Profile')}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? 'initial' : 'center',
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : 'auto',
+                  justifyContent: 'center',
+                }}
+              >
+                <PersonIcon />
+              </ListItemIcon>
+              <ListItemText primary="Profile" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
+        </List>
+        <Divider />
+        <List>
+           <ListItem disablePadding sx={{ display: 'block' }} onClick={handleLogout}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <ExitToAppIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Logout"
+                  sx={{
+                    opacity: open ? 1 : 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'left',
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+        </List>
+      </Drawer>
+    </Box>
+  );
+}
 
 export default Navbar;
-
-// const Navbar = ({ token, setToken, user, setUser, setLogged }) => {
-//   const handleClick = () => {
-//     console.log("log out");
-//     setToken("");
-//     setLogged(false);
-//   };
-//   return (
-//     <>
-//       <nav className="navbar navbar-expand-lg bg-body-tertiary text-dark ">
-//         <div className="container-fluid">
-//           <Link className="navbar-brand text-dark" to="/home">
-//             QuizViz
-//           </Link>jyhjnhnh111101010100101
-//           <Link className="navbar-brand text-dark" to="/home">
-//             {user}
-//           </Link>
-//           <button
-//             className="navbar-toggler text-dark"
-//             type="button"
-//             data-bs-toggle="collapse"
-//             data-bs-target="#navbarNav"
-//             aria-controls="navbarNav"
-//             aria-expanded="false"
-//             aria-label="Toggle navigation"
-//           >
-//             <span className="navbar-toggler-icon"></span>
-//           </button>
-//           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-//             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-//               <li className="nav-item">
-//                 <Link
-//                   className="nav-link active text-dark"
-//                   aria-current="page"
-//                   to="/home"
-//                 >
-//                   Home
-//                 </Link>
-//               </li>
-//               <li className="nav-item">
-//                 <Link className="nav-link text-dark" to="/history">
-//                   History
-//                 </Link>
-//               </li>
-//               <li className="nav-item">
-//                 <Link className="nav-link text-dark" to="/dashboard">
-//                   Dashboard
-//                 </Link>
-//               </li>
-//               <li className="nav-item">
-//                 <Link className="nav-link text-dark" to="/leaderboard">
-//                   Leaderboard
-//                 </Link>
-//               </li>
-//               <li className="nav-item">
-//                 <Link
-//                   className="nav-link text-dark"
-//                   to="/login"
-//                   onClick={handleClick}
-//                 >
-//                   Logout
-//                 </Link>
-//               </li>
-//             </ul>
-//           </div>
-//         </div>
-//       </nav>
-//     </>
-//   );
-// };
-
-// export default Navbar;

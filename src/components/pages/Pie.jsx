@@ -2,20 +2,21 @@
 
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
-import "../App.css";
+import "../Home.css";
 import Chart from "react-apexcharts";
-import { data as databaseData } from '../components/Database'; // Adjust the path based on your actual file structure
+import { data } from '../Database'; // Adjust the path based on your actual file structure
+import Sidenav from './Sidenav';
 
 const TriplePieCharts = () => {
-  const domains = [...new Set(databaseData.map(item => item.name))];
-  const difficulties = [...new Set(databaseData.map(item => item.difficulty))];
+  const domains = [...new Set(data.map(item => item.name))];
+  const difficulties = [...new Set(data.map(item => item.difficulty))];
 
   const chartData = {};
 
   domains.forEach(domain => {
     chartData[domain] = {};
     difficulties.forEach(difficulty => {
-      chartData[domain][difficulty] = databaseData.filter(item => item.name === domain && item.difficulty === difficulty)[0];
+      chartData[domain][difficulty] = data.filter(item => item.name === domain && item.difficulty === difficulty)[0];
     });
   });
 
@@ -36,7 +37,7 @@ const TriplePieCharts = () => {
   return (
     <>
       <Box sx={{ display: 'flex' }}>
-
+       <Sidenav />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <div className="App">
             <h1>

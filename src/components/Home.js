@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import Loading from "./Loading";
 import axios from "axios";
+import Layout from './Layout';
 
 
 const Modal = (props) => {
@@ -89,6 +90,7 @@ const Modal = (props) => {
 
 
     try {
+
       const response = await axios.get("http://127.0.0.1:8000/api/questions/", {
         params: {
           category: props.category,
@@ -201,6 +203,7 @@ const Modal = (props) => {
 
   return (
     <>
+    
       <div
         className="modal fade"
         id="staticBackdrop"
@@ -380,6 +383,7 @@ const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   return (
     <>
+    
       {/* <Navbar
         user={user}
         setUser={user}
@@ -388,10 +392,11 @@ const [windowWidth, setWindowWidth] = useState(window.innerWidth);
         setLogged={setLogged}
         page={"Home"}
       /> */}
-      <Navbar />
-
+      
+      <Layout>
+        
 <div className="background">
-      <div className="container">
+      <div className="container" style={{ overflowX: 'auto' }}> 
         <div className="row">
           <Cards
             title={"Linux"}
@@ -483,6 +488,8 @@ const [windowWidth, setWindowWidth] = useState(window.innerWidth);
         setUserId = {setUserId}
 
       />
+      
+      </Layout>
     </>
   );
 };

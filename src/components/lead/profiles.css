@@ -1,0 +1,154 @@
+/* profiles.css */
+
+/* Profile Container */
+.profile-container {
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  /*background-color: antiquewhite;*/
+  border-color: black;
+  margin-top: 1.2em;
+  padding-top: 1em;
+  width: 110vh;
+}
+
+/* Individual Profile Items */
+.flex {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  background-color: antiquewhite;
+  border-radius: 10px;
+  flex-wrap: wrap;
+  /* height: 50dvh; */
+  /* width: 00 vh; */
+}
+
+/* Highlighting Specific User */
+.flex.highlight {
+  background-color: #d1d0ca; /* Yellow background for highlighting */
+  text-wrap: wrap;
+  flex-wrap: wrap;
+  height: 10dvh;
+  width: 75dvh;
+}
+
+/* Profile Image */
+.flex img {
+  width: 70px;
+  height: 70px; /* Adjusted height to maintain the aspect ratio */
+  border-radius: 50%;
+  margin-right: 10px;
+  margin-left: 1.2em;
+}
+
+/* User Information */
+.info {
+  flex: 1;
+}
+
+/* Score and Submission Time */
+.score-time {
+  margin-left: 20px;
+}
+
+/* Heading Styles */
+h3 {
+  margin: 6px;
+}
+
+/* Highlighting Rank 1 */
+.flex:nth-child(0) {
+  position: sticky;
+  top: 0.2em;
+  z-index: 1;
+  background-color: rgb(199, 171, 130);
+  margin-bottom: 1em;
+}
+
+/* Top 3 Profiles */
+.top-profiles {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* Top 3 Profile Image */
+.top-profiles .flex img {
+  width: 50px;
+  height: 50px; /* Adjusted height to maintain the aspect ratio */
+  border-radius: 50%;
+  margin-right: 10px;
+  margin-left: 1.2em;
+}
+
+/* Top 3 Profile Information */
+.top-profiles .info {
+  flex: 1;
+}
+
+/* Top 3 Profile Score */
+.top-profiles .score {
+  margin-left: 20px;
+  font-weight: bold;
+}
+
+
+/* Top Three Profiles */
+.top-three {
+  display: flex;
+  justify-content: space-around;
+  /* Other styles */
+}
+
+/* Individual Profile in Top Three */
+.top-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+  /* Other styles */
+}
+
+/* Podium Profile */
+.podium-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  /* Other styles */
+}
+
+/* Medium-sized Profile Image */
+.profile-image-medium {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  /* Other styles */
+}
+
+.other-profiles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px; /* Adjust space between profiles */
+  /* Other styles */
+}
+
+
+
+/* Normal Profile Image */
+.profile-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  /* Other styles */
+}
+
+/* Additional styling for names, scores, ranks, etc. */

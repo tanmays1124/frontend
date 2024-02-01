@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./History.css";
+import "./History (1).css";
 import bg1 from "../images/history.jpg";
 import Navbar from "./Navbar";
 import Layout from './Layout';
 
-const History = ({ userId, setUserId }) => {
+const History = ({ userId, setUserId ,open}) => {
   const styles = {
     background: {
       backgroundImage: `url(${bg1})`,
@@ -88,7 +88,7 @@ const History = ({ userId, setUserId }) => {
   const [selectedQuiz, setSelectedQuiz] = useState(null);
 
   const handleQuizClick = (quiz) => {
-    setSelectedQuiz(quiz);
+    setSelectedQuiz(selectedQuiz===quiz ? null:quiz);
   };
 
   function conversion(timestamp) {
@@ -113,8 +113,7 @@ const History = ({ userId, setUserId }) => {
 
   return (
     <>
-       <Layout open={open}>
-
+        <Layout open={open}>
       {questionHistory.length == 0 ? (
         <div className="contained" style={styles.contained}>
           <div className="text" style={styles.text}>
@@ -154,12 +153,14 @@ const History = ({ userId, setUserId }) => {
                           <div
                             key={index}
                             className={`answer ${
-                              attempt.is_correct ? "correct" : "wrong"
+                              attempt.is_correct ? " correct" : "wrong"
                             }`}
                           >
-                            {attempt.q_text}{" "}
+                            {/* {attempt.q_text}{" "}
                             <span className="with-space">&nbsp;</span>
-                            {attempt.is_correct ? "Correct" : "Wrong"}
+                            {attempt.is_correct ? "Correct" : "Wrong"} */}
+                             {<span className="symbol">{attempt.is_correct ? '✔' : '✘'}</span>}
+                             {<span className="question-text">{attempt.q_text}</span>}
                           </div>
                         )
                       )}
